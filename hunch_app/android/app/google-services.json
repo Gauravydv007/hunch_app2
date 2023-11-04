@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "160043964806",
+    "project_id": "hunchapp-68c9f",
+    "storage_bucket": "hunchapp-68c9f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:160043964806:android:e7914dc3544c30f3437407",
+        "android_client_info": {
+          "package_name": "com.example.hunch_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDT3slJH-p2f1DYkWlPEeLupm_k_DS3mI4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
