@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:hunch_app/screens/emailverification.dart';
 import 'package:image_picker/image_picker.dart';
 
-
 class SignUP extends StatefulWidget {
   const SignUP({super.key});
 
@@ -19,21 +18,18 @@ class _SignUPState extends State<SignUP> {
   final passwordContoller = TextEditingController();
   final emailController = TextEditingController();
   final usernameController = TextEditingController();
-  
+
   final confirmPasswordController = TextEditingController();
   final key = GlobalKey();
   final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
 
-
-
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-    CollectionReference _reference = FirebaseFirestore.instance.collection('Image_add');
+  CollectionReference _reference =
+      FirebaseFirestore.instance.collection('Image_add');
 
-    String imageUrl = '';
-
-
+  String imageUrl = '';
 
   bool _obscureText = true;
   bool _obs = true;
@@ -125,52 +121,49 @@ class _SignUPState extends State<SignUP> {
           );
         });
 
-  //   try {
-  //     if (passwordContoller.text == confirmPasswordController.text) {
-  //       await FirebaseAuth.instance.createUserWithEmailAndPassword(
-  //         email: emailController.text,
-  //         password: passwordContoller.text,
-  //       );
-  //     } else {
-  //       showErrorMessage("Password dont't match");
-  //     }
-  //   } on FirebaseAuthException catch (e) {
-  //     Navigator.pop(context);
+    //   try {
+    //     if (passwordContoller.text == confirmPasswordController.text) {
+    //       await FirebaseAuth.instance.createUserWithEmailAndPassword(
+    //         email: emailController.text,
+    //         password: passwordContoller.text,
+    //       );
+    //     } else {
+    //       showErrorMessage("Password dont't match");
+    //     }
+    //   } on FirebaseAuthException catch (e) {
+    //     Navigator.pop(context);
 
-  //     showErrorMessage(e.code);
-  //   }
-  // }
+    //     showErrorMessage(e.code);
+    //   }
+    // }
 
-  // void showErrorMessage(String message) {
-  //   showDialog(
-  //       context: context,
-  //       builder: (context) {
-  //         return AlertDialog(
-  //             title: Center(
-  //           child: Text(
-  //             message,
-  //             style: const TextStyle(color: Colors.black),
-  //           ),
-  //         ));
-  //       });
-  // }
-
+    // void showErrorMessage(String message) {
+    //   showDialog(
+    //       context: context,
+    //       builder: (context) {
+    //         return AlertDialog(
+    //             title: Center(
+    //           child: Text(
+    //             message,
+    //             style: const TextStyle(color: Colors.black),
+    //           ),
+    //         ));
+    //       });
+    // }
 
     try {
       if (passwordContoller.text == confirmPasswordController.text) {
-        UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
+        UserCredential userCredential =
+            await _auth.createUserWithEmailAndPassword(
           email: emailController.text,
           password: passwordContoller.text,
         );
 
+        if (userCredential.user != null) {
+          // Add user data to Firestore after successful registration
 
+          print('Username: ${usernameController.text}');
 
-        
-
-        if (userCredential.user != null) {     // Add user data to Firestore after successful registration
-           
-           print('Username: ${usernameController.text}');
-             
           addUserToFirestore(userCredential.user!);
 
           // Navigate to the email verification screen
@@ -193,15 +186,14 @@ class _SignUPState extends State<SignUP> {
   }
 
   void addUserToFirestore(User user) async {
-    await _firestore.collection('user').doc(user.uid).set({
-      'uid': user.uid,
-      'email': user.email,
-      'username': usernameController.text,
-      'image': imageUrl,
-      // Add more user information as needed
-     
-    },
-    
+    await _firestore.collection('user').doc(user.uid).set(
+      {
+        'uid': user.uid,
+        'email': user.email,
+        'username': usernameController.text,
+        'image': imageUrl,
+        // Add more user information as needed
+      },
     );
     //  _reference.add(dataToSend);
   }
@@ -222,9 +214,6 @@ class _SignUPState extends State<SignUP> {
     );
   }
 
-
-
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -235,250 +224,230 @@ class _SignUPState extends State<SignUP> {
           //   title: const Text("Signup Page"),
           // ),
           body: Container(
-            alignment: Alignment.bottomCenter,
-            constraints: const BoxConstraints.expand(),
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                  image: AssetImage("assets/images/Untitled.png"),
-                  fit: BoxFit.cover),
-            ),
+        alignment: Alignment.bottomCenter,
+        constraints: const BoxConstraints.expand(),
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+              image: AssetImage("assets/images/Untitled.png"),
+              fit: BoxFit.cover),
+        ),
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(15.0),
             child: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.all(15.0),
-                child: SingleChildScrollView(
-                  child: Container(
-                    
-                    child: Column(
-                      children: <Widget>[
-                        Form(
-                            key: _formkey,
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Column(
-                                children: <Widget>[
-                                  TextFormField(
-                                    controller: usernameController,
-                                     decoration: InputDecoration(
-                                      enabledBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: Colors.deepPurpleAccent),
-                                        borderRadius: BorderRadius.circular(15),
-                                      ),
-                                      focusedBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: Colors.deepPurpleAccent),
-                                        borderRadius: BorderRadius.circular(15),
-                                      ),
-                                      hintText: 'UserName',
-                                      labelText: " UserName",
-                                      labelStyle: TextStyle(
-                                        color: Colors.black54,
-                                      ),
-                                      fillColor: Colors.grey[200],
-                                      filled: true,
-                                    ),
-
+              child: Container(
+                child: Column(
+                  children: <Widget>[
+                    Form(
+                        key: _formkey,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            children: <Widget>[
+                              TextFormField(
+                                controller: usernameController,
+                                decoration: InputDecoration(
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Colors.deepPurpleAccent),
+                                    borderRadius: BorderRadius.circular(15),
                                   ),
-                                  SizedBox(height: 15,),
-                                  TextFormField(
-                                    validator: _validateEmail,
-                                    autovalidateMode:
-                                        AutovalidateMode.onUserInteraction,
-                                    controller: emailController,
-                                    decoration: InputDecoration(
-                                      enabledBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: Colors.deepPurpleAccent),
-                                        borderRadius: BorderRadius.circular(15),
-                                      ),
-                                      focusedBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: Colors.deepPurpleAccent),
-                                        borderRadius: BorderRadius.circular(15),
-                                      ),
-                                      hintText: 'Email',
-                                      labelText: " Email",
-                                      labelStyle: TextStyle(
-                                        color: Colors.black54,
-                                      ),
-                                      fillColor: Colors.grey[200],
-                                      filled: true,
-                                    ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Colors.deepPurpleAccent),
+                                    borderRadius: BorderRadius.circular(15),
                                   ),
-                                  const SizedBox(
-                                    height: 15,
+                                  hintText: 'UserName',
+                                  labelText: " UserName",
+                                  labelStyle: TextStyle(
+                                    color: Colors.black54,
                                   ),
-                                  TextFormField(
-                                    // validator: (value) {
-                                    //   if (value!.isEmpty) {
-                                    //     return 'Please enter your password';
-                                    //   } else if (value.length < 6) {
-                                    //     return 'Password must be at least 6 characters!';
-                                    //   }
-                                    //   return null;
-                                    // },
-
-                                    validator: validatePassword,
-                                    autovalidateMode:
-                                        AutovalidateMode.onUserInteraction,
-                                    controller: passwordContoller,
-
-                                    obscureText: _obscureText,
-
-                                    decoration: InputDecoration(
-                                        enabledBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: Colors.deepPurpleAccent),
-                                          borderRadius:
-                                              BorderRadius.circular(15),
-                                        ),
-                                        focusedBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: Colors.deepPurpleAccent),
-                                          borderRadius:
-                                              BorderRadius.circular(15),
-                                        ),
-                                        hintText: 'Password',
-                                        labelText: "Password",
-                                        labelStyle: TextStyle(
-                                          color: Colors.black54,
-                                        ),
-                                        fillColor: Colors.grey[200],
-                                        filled: true,
-                                        suffixIconConstraints: BoxConstraints(
-                                          minHeight: 10,
-                                        ),
-                                        suffixIcon: IconButton(
-                                            onPressed: _toggle,
-                                            icon: _obscureText
-                                                ? Icon(
-                                                    Icons
-                                                        .remove_red_eye_rounded,
-                                                  )
-                                                : Icon(Icons
-                                                    .remove_red_eye_outlined))),
-                                  ),
-                                  const SizedBox(
-                                    height: 15,
-                                  ),
-                                  TextFormField(
-                                    // validator: (value) {
-                                    //   if (value!.isEmpty) {
-                                    //     return "Enter Password";
-                                    //   } else if (passwordContoller.text.length <
-                                    //       6) {
-                                    //     return "Password length should be more than 6 Letters";
-                                    //   }
-                                    // },
-
-                                    validator: _validatePassword,
-
-                                    controller: confirmPasswordController,
-                                    obscureText: _obs,
-                                    decoration: InputDecoration(
-                                        enabledBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: Colors.deepPurpleAccent),
-                                          borderRadius:
-                                              BorderRadius.circular(15),
-                                        ),
-                                        focusedBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: Colors.deepPurpleAccent),
-                                          borderRadius:
-                                              BorderRadius.circular(15),
-                                        ),
-                                        hintText: ' Password',
-                                        labelText: " Re-enter Password",
-                                        labelStyle: TextStyle(
-                                          color: Colors.black54,
-                                        ),
-                                        fillColor: Colors.grey[200],
-                                        filled: true,
-                                        suffixIconConstraints: BoxConstraints(
-                                          minHeight: 10,
-                                        ),
-                                        suffixIcon: IconButton(
-                                            onPressed: () {
-                                              setState(() {
-                                                _obs = !_obs;
-                                              });
-                                            },
-                                            icon: _obs
-                                                ? Icon(
-                                                    Icons
-                                                        .remove_red_eye_rounded,
-                                                  )
-                                                : Icon(Icons
-                                                    .remove_red_eye_outlined))),
-                                  ),
-                                  const SizedBox(
-                                    height: 8,
-                                  ),
-                                ],
+                                  fillColor: Colors.grey[200],
+                                  filled: true,
+                                ),
                               ),
-                            )),
+                              SizedBox(
+                                height: 15,
+                              ),
+                              TextFormField(
+                                validator: _validateEmail,
+                                autovalidateMode:
+                                    AutovalidateMode.onUserInteraction,
+                                controller: emailController,
+                                decoration: InputDecoration(
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Colors.deepPurpleAccent),
+                                    borderRadius: BorderRadius.circular(15),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Colors.deepPurpleAccent),
+                                    borderRadius: BorderRadius.circular(15),
+                                  ),
+                                  hintText: 'Email',
+                                  labelText: " Email",
+                                  labelStyle: TextStyle(
+                                    color: Colors.black54,
+                                  ),
+                                  fillColor: Colors.grey[200],
+                                  filled: true,
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 15,
+                              ),
+                              TextFormField(
+                                validator: validatePassword,
+                                autovalidateMode:
+                                    AutovalidateMode.onUserInteraction,
+                                controller: passwordContoller,
+                                obscureText: _obscureText,
+                                decoration: InputDecoration(
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: Colors.deepPurpleAccent),
+                                      borderRadius: BorderRadius.circular(15),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: Colors.deepPurpleAccent),
+                                      borderRadius: BorderRadius.circular(15),
+                                    ),
+                                    hintText: 'Password',
+                                    labelText: "Password",
+                                    labelStyle: TextStyle(
+                                      color: Colors.black54,
+                                    ),
+                                    fillColor: Colors.grey[200],
+                                    filled: true,
+                                    suffixIconConstraints: BoxConstraints(
+                                      minHeight: 10,
+                                    ),
+                                    suffixIcon: IconButton(
+                                        onPressed: _toggle,
+                                        icon: _obscureText
+                                            ? Icon(
+                                                Icons.remove_red_eye_rounded,
+                                              )
+                                            : Icon(Icons
+                                                .remove_red_eye_outlined))),
+                              ),
+                              const SizedBox(
+                                height: 15,
+                              ),
+                              TextFormField(
+                                // validator: (value) {
+                                //   if (value!.isEmpty) {
+                                //     return "Enter Password";
+                                //   } else if (passwordContoller.text.length <
+                                //       6) {
+                                //     return "Password length should be more than 6 Letters";
+                                //   }
+                                // },
 
+                                validator: _validatePassword,
 
-                            SizedBox(height: 10,),
-                            IconButton(onPressed: () async{
-
-
-                               ImagePicker imagePicker = ImagePicker();
-                            XFile? file = await imagePicker.pickImage(source : ImageSource.gallery);
-                            print('${file?.path}');
-                            if(file==null) return;
-
-                            // String uniqueFileName = DateTime.now().fromMillisecondsSinceEpoch.toString();
-                              String uniqueFileName = DateTime.now().millisecondsSinceEpoch.toString();
-
-
-                            Reference referenceRoot = FirebaseStorage.instance.ref();
-                            Reference referenceDirImages = referenceRoot.child('images');
-
-                            //create a reference for the image to stored
-                            Reference referenceImageToUpload = referenceDirImages.child(uniqueFileName);
-
-                            try{
-
-                              await referenceImageToUpload.putFile(File(file!.path));
-                              // get down. url
-                              imageUrl = await referenceImageToUpload.getDownloadURL();
-                            }catch(error){
-                              //some error occur
-                            }
-
-                               //store file
-                               referenceImageToUpload.putFile(File(file!.path));
-
-                            }, icon: Icon(Icons.camera_alt)),
-                           
-
-
-
-                        ElevatedButton.icon(
-                          onPressed: ()  async{
-
-                            if(imageUrl.isEmpty){
-                              ScaffoldMessenger.of(context)
-                              .showSnackBar(SnackBar(content: Text('Please add image') ,)
-                              );
-                              
-                            }else{
-                            _submitForm();
-                            }
-                            
-                          },
-                          icon: Icon(Icons.keyboard_arrow_right_sharp),
-                          label: Text("Signup"),
-                        )
-                      ],
+                                controller: confirmPasswordController,
+                                obscureText: _obs,
+                                decoration: InputDecoration(
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: Colors.deepPurpleAccent),
+                                      borderRadius: BorderRadius.circular(15),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: Colors.deepPurpleAccent),
+                                      borderRadius: BorderRadius.circular(15),
+                                    ),
+                                    hintText: ' Password',
+                                    labelText: " Re-enter Password",
+                                    labelStyle: TextStyle(
+                                      color: Colors.black54,
+                                    ),
+                                    fillColor: Colors.grey[200],
+                                    filled: true,
+                                    suffixIconConstraints: BoxConstraints(
+                                      minHeight: 10,
+                                    ),
+                                    suffixIcon: IconButton(
+                                        onPressed: () {
+                                          setState(() {
+                                            _obs = !_obs;
+                                          });
+                                        },
+                                        icon: _obs
+                                            ? Icon(
+                                                Icons.remove_red_eye_rounded,
+                                              )
+                                            : Icon(Icons
+                                                .remove_red_eye_outlined))),
+                              ),
+                              const SizedBox(
+                                height: 8,
+                              ),
+                            ],
+                          ),
+                        )),
+                    SizedBox(
+                      height: 10,
                     ),
-                  ),
+                    IconButton(
+                        onPressed: () async {
+                          ImagePicker imagePicker = ImagePicker();
+                          XFile? file = await imagePicker.pickImage(
+                              source: ImageSource.gallery);
+                          print('${file?.path}');
+                          if (file == null) return;
+
+                          // String uniqueFileName = DateTime.now().fromMillisecondsSinceEpoch.toString();
+                          String uniqueFileName =
+                              DateTime.now().millisecondsSinceEpoch.toString();
+
+                          Reference referenceRoot =
+                              FirebaseStorage.instance.ref();
+                          Reference referenceDirImages =
+                              referenceRoot.child('images');
+
+                          //create a reference for the image to stored
+                          Reference referenceImageToUpload =
+                              referenceDirImages.child(uniqueFileName);
+
+                          try {
+                            await referenceImageToUpload
+                                .putFile(File(file!.path));
+                            // get down. url
+                            imageUrl =
+                                await referenceImageToUpload.getDownloadURL();
+                          } catch (error) {
+                            //some error occur
+                          }
+
+                          //store file
+                          referenceImageToUpload.putFile(File(file!.path));
+                        },
+                        icon: Icon(Icons.camera_alt)),
+                    ElevatedButton.icon(
+                      onPressed: () async {
+                        if (imageUrl.isEmpty) {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text('Please add image'),
+                          ));
+                        } else {
+                          _submitForm();
+                        }
+                      },
+                      icon: Icon(Icons.keyboard_arrow_right_sharp),
+                      label: Text("Signup"),
+                    )
+                  ],
                 ),
               ),
             ),
-          )),
+          ),
+        ),
+      )),
     );
   }
 }
