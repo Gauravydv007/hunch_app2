@@ -1,7 +1,12 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:hunch_app/emailverification.dart';
+import 'package:hunch_app/screens/emailverification.dart';
+import 'package:image_picker/image_picker.dart';
+
 
 class SignUP extends StatefulWidget {
   const SignUP({super.key});
@@ -13,13 +18,20 @@ class SignUP extends StatefulWidget {
 class _SignUPState extends State<SignUP> {
   final passwordContoller = TextEditingController();
   final emailController = TextEditingController();
-
+  final usernameController = TextEditingController();
+  
   final confirmPasswordController = TextEditingController();
   final key = GlobalKey();
   final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
 
-    final FirebaseAuth _auth = FirebaseAuth.instance;
+
+
+  final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+    CollectionReference _reference = FirebaseFirestore.instance.collection('Image_add');
+
+    String imageUrl = '';
 
 
 
@@ -151,8 +163,14 @@ class _SignUPState extends State<SignUP> {
           password: passwordContoller.text,
         );
 
-        if (userCredential.user != null) {
-          // Add user data to Firestore after successful registration
+
+
+        
+
+        if (userCredential.user != null) {     // Add user data to Firestore after successful registration
+           
+           print('Username: ${usernameController.text}');
+             
           addUserToFirestore(userCredential.user!);
 
           // Navigate to the email verification screen
@@ -178,8 +196,14 @@ class _SignUPState extends State<SignUP> {
     await _firestore.collection('user').doc(user.uid).set({
       'uid': user.uid,
       'email': user.email,
+      'username': usernameController.text,
+      'image': imageUrl,
       // Add more user information as needed
-    });
+     
+    },
+    
+    );
+    //  _reference.add(dataToSend);
   }
 
   void showErrorMessage(String message) {
@@ -201,29 +225,29 @@ class _SignUPState extends State<SignUP> {
 
 
 
-
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-          appBar: AppBar(
-            centerTitle: true,
-            title: const Text("Signup Page"),
-          ),
+          // appBar: AppBar(
+          //   centerTitle: true,
+          //   title: const Text("Signup Page"),
+          // ),
           body: Container(
+            alignment: Alignment.bottomCenter,
             constraints: const BoxConstraints.expand(),
             decoration: const BoxDecoration(
               image: DecorationImage(
-                  image: AssetImage("assets/images/computer.jpg"),
+                  image: AssetImage("assets/images/Untitled.png"),
                   fit: BoxFit.cover),
             ),
-            child: Center(
+            child: SingleChildScrollView(
               child: Padding(
                 padding: const EdgeInsets.all(15.0),
                 child: SingleChildScrollView(
                   child: Container(
+                    
                     child: Column(
                       children: <Widget>[
                         Form(
@@ -232,6 +256,30 @@ class _SignUPState extends State<SignUP> {
                               padding: const EdgeInsets.all(8.0),
                               child: Column(
                                 children: <Widget>[
+                                  TextFormField(
+                                    controller: usernameController,
+                                     decoration: InputDecoration(
+                                      enabledBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: Colors.deepPurpleAccent),
+                                        borderRadius: BorderRadius.circular(15),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: Colors.deepPurpleAccent),
+                                        borderRadius: BorderRadius.circular(15),
+                                      ),
+                                      hintText: 'UserName',
+                                      labelText: " UserName",
+                                      labelStyle: TextStyle(
+                                        color: Colors.black54,
+                                      ),
+                                      fillColor: Colors.grey[200],
+                                      filled: true,
+                                    ),
+
+                                  ),
+                                  SizedBox(height: 15,),
                                   TextFormField(
                                     validator: _validateEmail,
                                     autovalidateMode:
@@ -258,7 +306,7 @@ class _SignUPState extends State<SignUP> {
                                     ),
                                   ),
                                   const SizedBox(
-                                    height: 20,
+                                    height: 15,
                                   ),
                                   TextFormField(
                                     // validator: (value) {
@@ -311,7 +359,7 @@ class _SignUPState extends State<SignUP> {
                                                     .remove_red_eye_outlined))),
                                   ),
                                   const SizedBox(
-                                    height: 20,
+                                    height: 15,
                                   ),
                                   TextFormField(
                                     // validator: (value) {
@@ -365,14 +413,61 @@ class _SignUPState extends State<SignUP> {
                                                     .remove_red_eye_outlined))),
                                   ),
                                   const SizedBox(
-                                    height: 20,
+                                    height: 8,
                                   ),
                                 ],
                               ),
                             )),
+
+
+                            SizedBox(height: 10,),
+                            IconButton(onPressed: () async{
+
+
+                               ImagePicker imagePicker = ImagePicker();
+                            XFile? file = await imagePicker.pickImage(source : ImageSource.gallery);
+                            print('${file?.path}');
+                            if(file==null) return;
+
+                            // String uniqueFileName = DateTime.now().fromMillisecondsSinceEpoch.toString();
+                              String uniqueFileName = DateTime.now().millisecondsSinceEpoch.toString();
+
+
+                            Reference referenceRoot = FirebaseStorage.instance.ref();
+                            Reference referenceDirImages = referenceRoot.child('images');
+
+                            //create a reference for the image to stored
+                            Reference referenceImageToUpload = referenceDirImages.child(uniqueFileName);
+
+                            try{
+
+                              await referenceImageToUpload.putFile(File(file!.path));
+                              // get down. url
+                              imageUrl = await referenceImageToUpload.getDownloadURL();
+                            }catch(error){
+                              //some error occur
+                            }
+
+                               //store file
+                               referenceImageToUpload.putFile(File(file!.path));
+
+                            }, icon: Icon(Icons.camera_alt)),
+                           
+
+
+
                         ElevatedButton.icon(
-                          onPressed: () {
+                          onPressed: ()  async{
+
+                            if(imageUrl.isEmpty){
+                              ScaffoldMessenger.of(context)
+                              .showSnackBar(SnackBar(content: Text('Please add image') ,)
+                              );
+                              
+                            }else{
                             _submitForm();
+                            }
+                            
                           },
                           icon: Icon(Icons.keyboard_arrow_right_sharp),
                           label: Text("Signup"),

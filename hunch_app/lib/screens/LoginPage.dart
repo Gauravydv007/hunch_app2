@@ -5,7 +5,7 @@ import 'package:hunch_app/screens/Home_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hunch_app/screens/Register_page.dart';
 import 'package:hunch_app/auth_service.dart';
-import 'package:hunch_app/forgot_password.dart';
+import 'package:hunch_app/screens/forgot_password.dart';
 
 class Login extends StatefulWidget {
   Login({Key? key}) : super(key: key);
