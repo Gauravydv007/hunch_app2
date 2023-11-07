@@ -15,6 +15,30 @@ class Chatpage extends StatefulWidget {
 }
 
 class _ChatpageState extends State<Chatpage> {
+
+    var senderUrl = FirebaseAuth.instance.currentUser!.photoURL.toString();
+  Future<String?> getImageUrlForUser() async {
+    final em = FirebaseAuth.instance.currentUser!.email.toString();
+
+    final userSnapshot = await FirebaseFirestore.instance
+        .collection('Users')
+        .where('email', isEqualTo: em)
+        .get();
+
+    if (userSnapshot.docs.isNotEmpty) {
+      final userData = userSnapshot.docs.first.data() as Map<String, dynamic>;
+
+      final imageUrl = userData['imgUrl'] as String?;
+      print(imageUrl);
+      return imageUrl;
+    } else {
+      return null;
+    }
+  }
+
+
+
+
   String selected = '';
   Map<String, dynamic> cur = {};
   final _auth = FirebaseAuth.instance;
@@ -22,21 +46,23 @@ class _ChatpageState extends State<Chatpage> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.orange.shade100,
-        appBar: AppBar(
-          title: Text(
-            'Messenger',
-            style: GoogleFonts.ubuntu(fontSize: 25),
-          ),
-          centerTitle: true,
-          backgroundColor: Colors.white,
-          foregroundColor: Colors.black,
-        ),
+         
+          // AppBar(
+        //   title: Text(
+        //     'Messenger',
+        //     style: GoogleFonts.ubuntu(fontSize: 25),
+        //   ),
+        //   centerTitle: true,
+        //   backgroundColor: Colors.white,
+        //   foregroundColor: Colors.black,
+        // ),
         body: Container(
           child: Column(
             children: [
               _usersList(context, selected),
               Expanded(
                   child: Container(
+                    
                 margin: EdgeInsets.only(top: 5),
                 color: Colors.orange.shade100,
                 child: Container(
@@ -54,11 +80,17 @@ class _ChatpageState extends State<Chatpage> {
                     alignment: Alignment.center,
                     width: MediaQuery.sizeOf(context).width,
                     child: cur.isEmpty
-                        ? Center(child: Text("SELECT A CHAT "))
+                        ? Center(child: Text("SELECT USER ",
+                        style:  TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold
+                        ),))
                         : Chatscreen(
                             Remail: cur['email'],
                             Rid: cur['uid'],
-                            imgUrl :cur['image']
+                            imgUrl :cur['image'],
+                            senderUrl: senderUrl,
+                              
                           )),
               ))
             ],
@@ -150,4 +182,25 @@ class _ChatpageState extends State<Chatpage> {
       return Container();
     }
   }
-}
+
+
+  //  _fetch() async {
+  //   final firebaseUser = FirebaseAuth.instance.currentUser;
+  //   if (firebaseUser != null) {
+  //     final userDoc = await FirebaseFirestore.instance
+  //         .collection('user')
+  //         .doc(firebaseUser.uid)
+  //         .get();
+  //     if (userDoc.exists) {
+        
+        
+  //       var senderUrl = userDoc.data()?['image'] ?? ''; // Get the image URL from Firestore
+        
+  //       final usernameFromFirestore = userDoc.data()?['username'];
+  //       print(
+  //           'Username stored in Firestore: $usernameFromFirestore'); // Print the username
+  //     }
+  //   }
+  }
+
+
