@@ -88,14 +88,38 @@ class _ChatscreenState extends State<Chatscreen> {
     return Container(
       child: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-              widget.Remail.toString().split('@')[0],
-              style:
-                  GoogleFonts.ubuntu(fontSize: 23, fontWeight: FontWeight.bold),
-            ),
-          ),
+
+           Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+             children: [
+
+               Padding(
+                 padding: const EdgeInsets.only(top: 7, left: 8),
+                 child: CircleAvatar(
+                  radius: 20,
+                  backgroundImage: NetworkImage(widget.imgUrl),
+               
+                 ),
+               ),
+
+                Expanded(
+                  child: Center(
+                    child: Padding(
+                              padding: const EdgeInsets.all(8),
+                              child: Text(
+                                widget.Remail.toString().split('@')[0],
+                                style:
+                      GoogleFonts.ubuntu(fontSize: 23, fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                  ),
+                ),
+             ],
+           ),
+
+         
+
+          
           Divider(),
           Expanded(
               child: Padding(
