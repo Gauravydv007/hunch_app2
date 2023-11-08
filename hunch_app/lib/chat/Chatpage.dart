@@ -85,6 +85,7 @@ class _ChatpageState extends State<Chatpage> {
                             Rid: cur['uid'],
                             imgUrl: cur['image'],
                             senderUrl: senderUrl,
+                            
                           )),
               ))
             ],
@@ -135,6 +136,11 @@ class _ChatpageState extends State<Chatpage> {
       final email = data['email'].toString();
       return GestureDetector(
         onTap: () {
+
+          getImageUrlForUser().then((value) {
+            senderUrl = value.toString();
+            print(senderUrl);
+          });
           // print(select);
           print(_auth.currentUser!.email.toString() +
               "  " +

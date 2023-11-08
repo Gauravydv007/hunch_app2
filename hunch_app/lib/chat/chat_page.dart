@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:hunch_app/chat/Chatpage.dart';
 import 'package:hunch_app/chat_bubble.dart';
 import 'package:hunch_app/chat/chat_service.dart';
+import 'package:image_picker/image_picker.dart';
 
 class Chatscreen extends StatefulWidget {
   const Chatscreen(
@@ -22,6 +23,15 @@ class Chatscreen extends StatefulWidget {
 }
 
 class _ChatscreenState extends State<Chatscreen> {
+
+
+   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  CollectionReference _reference =
+      FirebaseFirestore.instance.collection('Image_add');
+
+  String imageUrl = '';
   String? senderUrl;
   // final _messageController = TextEditingController();
   // final auth = FirebaseAuth.instance;
