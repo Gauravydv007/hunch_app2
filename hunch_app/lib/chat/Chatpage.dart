@@ -1,4 +1,3 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -15,13 +14,12 @@ class Chatpage extends StatefulWidget {
 }
 
 class _ChatpageState extends State<Chatpage> {
-
-    var senderUrl = FirebaseAuth.instance.currentUser!.photoURL.toString();
+  var senderUrl = FirebaseAuth.instance.currentUser!.photoURL.toString();
   Future<String?> getImageUrlForUser() async {
     final em = FirebaseAuth.instance.currentUser!.email.toString();
 
     final userSnapshot = await FirebaseFirestore.instance
-        .collection('Users')
+        .collection('user')
         .where('email', isEqualTo: em)
         .get();
 
@@ -36,9 +34,6 @@ class _ChatpageState extends State<Chatpage> {
     }
   }
 
-
-
-
   String selected = '';
   Map<String, dynamic> cur = {};
   final _auth = FirebaseAuth.instance;
@@ -46,8 +41,8 @@ class _ChatpageState extends State<Chatpage> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.orange.shade100,
-         
-          // AppBar(
+
+        // AppBar(
         //   title: Text(
         //     'Messenger',
         //     style: GoogleFonts.ubuntu(fontSize: 25),
@@ -62,7 +57,6 @@ class _ChatpageState extends State<Chatpage> {
               _usersList(context, selected),
               Expanded(
                   child: Container(
-                    
                 margin: EdgeInsets.only(top: 5),
                 color: Colors.orange.shade100,
                 child: Container(
@@ -80,17 +74,17 @@ class _ChatpageState extends State<Chatpage> {
                     alignment: Alignment.center,
                     width: MediaQuery.sizeOf(context).width,
                     child: cur.isEmpty
-                        ? Center(child: Text("SELECT USER ",
-                        style:  TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold
-                        ),))
+                        ? Center(
+                            child: Text(
+                            "SELECT USER ",
+                            style: TextStyle(
+                                fontSize: 24, fontWeight: FontWeight.bold),
+                          ))
                         : Chatscreen(
                             Remail: cur['email'],
                             Rid: cur['uid'],
-                            imgUrl :cur['image'],
+                            imgUrl: cur['image'],
                             senderUrl: senderUrl,
-                              
                           )),
               ))
             ],
@@ -112,7 +106,6 @@ class _ChatpageState extends State<Chatpage> {
           return Center(
             child: CircularProgressIndicator(
               color: Colors.orange,
-              
             ),
           );
         } else {
@@ -166,7 +159,6 @@ class _ChatpageState extends State<Chatpage> {
                   backgroundImage: NetworkImage(data['image']),
                   backgroundColor:
                       select == email ? Colors.orange : Colors.grey.shade200,
-                  
                 ),
                 Text(
                   email.split('@')[0].toString().toLowerCase(),
@@ -182,25 +174,4 @@ class _ChatpageState extends State<Chatpage> {
       return Container();
     }
   }
-
-
-  //  _fetch() async {
-  //   final firebaseUser = FirebaseAuth.instance.currentUser;
-  //   if (firebaseUser != null) {
-  //     final userDoc = await FirebaseFirestore.instance
-  //         .collection('user')
-  //         .doc(firebaseUser.uid)
-  //         .get();
-  //     if (userDoc.exists) {
-        
-        
-  //       var senderUrl = userDoc.data()?['image'] ?? ''; // Get the image URL from Firestore
-        
-  //       final usernameFromFirestore = userDoc.data()?['username'];
-  //       print(
-  //           'Username stored in Firestore: $usernameFromFirestore'); // Print the username
-  //     }
-  //   }
-  }
-
-
+}
