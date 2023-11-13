@@ -25,11 +25,11 @@ class Chatscreen extends StatefulWidget {
 class _ChatscreenState extends State<Chatscreen> {
 
 
-   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  //  final FirebaseAuth _auth = FirebaseAuth.instance;
+  // final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  CollectionReference _reference =
-      FirebaseFirestore.instance.collection('Image_add');
+  // CollectionReference _reference =
+  //     FirebaseFirestore.instance.collection('Image_add');
 
   String imageUrl = '';
   String? senderUrl;
