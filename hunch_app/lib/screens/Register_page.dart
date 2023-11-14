@@ -393,8 +393,8 @@ class _SignUPState extends State<SignUP> {
                     SizedBox(
                       height: 10,
                     ),
-                    IconButton(
-                        onPressed: () async {
+                    InkWell(
+                        onTap: () async {
                           ImagePicker imagePicker = ImagePicker();
                           XFile? file = await imagePicker.pickImage(
                               source: ImageSource.gallery);
@@ -427,13 +427,43 @@ class _SignUPState extends State<SignUP> {
                           //store file
                           referenceImageToUpload.putFile(File(file!.path));
                         },
-                        icon: Icon(Icons.camera_alt)),
+                        child: Container(
+                          margin: EdgeInsets.only(bottom: 8),
+                          width: 200,
+                          padding: EdgeInsets.all(8.0),
+                          decoration: BoxDecoration(
+                          border: Border.all(color: Colors.black),
+                          borderRadius: BorderRadius.circular(15),
+                          color: const Color.fromARGB(255, 173, 157, 204),
+                        ),
+
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+
+                              Image.asset(
+                                "assets/images/icons8-camera-64 (1).png",
+                                height: 40,
+                              ),
+                              
+                              Text('Add Image',
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold
+                              ),)
+                            ],
+                          ),
+
+                        ),
+                        
+                        ),
                     ElevatedButton.icon(
                       onPressed: () async {
                         if (imageUrl.isEmpty) {
                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                             content: Text('Please add image'),
-                          ));
+                          )
+                          );
                         } else {
                           _submitForm();
                         }

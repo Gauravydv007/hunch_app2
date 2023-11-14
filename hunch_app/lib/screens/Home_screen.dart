@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hunch_app/chat/Chatpage.dart';
 import 'package:hunch_app/screens/LoginPage.dart';
-import 'package:hunch_app/auth_service.dart';
+import 'package:hunch_app/auth/auth_service.dart';
 import 'package:hunch_app/chat/chat_page.dart';
 import 'package:hunch_app/users.dart/userPage.dart';
 import 'package:hunch_app/users.dart/user_service.dart';

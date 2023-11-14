@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:hunch_app/chat/Chatpage.dart';
 import 'package:hunch_app/screens/Home_screen.dart';
 import 'package:hunch_app/screens/LoginPage.dart';
-import 'package:hunch_app/firebase_options.dart';
+import 'package:hunch_app/model/firebase_options.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 void main() async {

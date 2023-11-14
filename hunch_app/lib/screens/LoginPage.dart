@@ -4,7 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:hunch_app/screens/Home_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hunch_app/screens/Register_page.dart';
-import 'package:hunch_app/auth_service.dart';
+import 'package:hunch_app/auth/auth_service.dart';
 import 'package:hunch_app/screens/forgot_password.dart';
 
 class Login extends StatefulWidget {
