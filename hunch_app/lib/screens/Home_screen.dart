@@ -2,6 +2,8 @@ import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hunch_app/blog/add_post.dart';
+import 'package:hunch_app/blog/new_blog.dart';
 import 'package:hunch_app/chat/Chatpage.dart';
 import 'package:hunch_app/screens/LoginPage.dart';
 import 'package:hunch_app/auth/auth_service.dart';
@@ -33,7 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
     Container(
       color: Colors.amber,
     ),
-    Container(),
+    AddPostScreen(),
 
     Chatpage(),
     UserPage()

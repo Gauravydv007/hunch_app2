@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:hunch_app/model/message.dart';
 import 'dart:ui';
 
-class ChatService extends ChangeNotifier {
+class ChatService extends ChangeNotifier {  //notify listner when state change
   final _auth = FirebaseAuth.instance;
   final _store = FirebaseFirestore.instance;
 

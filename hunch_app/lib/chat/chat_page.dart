@@ -40,14 +40,14 @@ class _ChatscreenState extends State<Chatscreen> {
         }
         );
       } else {
-        // Handle the case when the sender's image URL is null or not found
+        // Handle the case when the sender's image URL is null 
       }
     }
     );
   }
 
-  Future<String?> getImageUrlForUser() async {
-    final em = FirebaseAuth.instance.currentUser!.email.toString();
+  Future<String?> getImageUrlForUser() async {                       // we use future bcoz it allow us to work with asynchronous
+    final em = FirebaseAuth.instance.currentUser!.email.toString();   //retrieve email of currenty user use
 
     final userSnapshot = await FirebaseFirestore.instance
         .collection('user')
@@ -103,7 +103,7 @@ class _ChatscreenState extends State<Chatscreen> {
                   child: Padding(
                     padding: const EdgeInsets.all(8),
                     child: Text(
-                      widget.Remail.toString().split('@')[0],
+                      widget.Remail.toString().split('@')[0],  //user name
                       style: GoogleFonts.ubuntu(
                           fontSize: 23, fontWeight: FontWeight.bold),
                     ),
@@ -124,7 +124,7 @@ class _ChatscreenState extends State<Chatscreen> {
     );
   }
 
-  Widget builderMessage() {
+  Widget builderMessage() {                 //display message  in chat like format and create ui
     return StreamBuilder(
       stream: chatService.getMessages(widget.Rid, auth.currentUser!.uid),
       builder: (context, snapshot) {
@@ -285,7 +285,7 @@ class _ChatscreenState extends State<Chatscreen> {
                               //         color: Colors.grey.shade600),
                               //   ),
                               // ),
-                              
+
                             ],
                           ),
                           Row(
